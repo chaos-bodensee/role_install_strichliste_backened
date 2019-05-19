@@ -1,2 +1,6 @@
 ---
+# generate a new database without importing old data
 generate_new_database: true
+
+# version check for this playbook
+submodules_versioncheck: true
