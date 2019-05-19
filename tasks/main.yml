@@ -63,11 +63,12 @@
   mysql_db:
     name: strichliste
     state: present
+  register: strichlistendb_exist 
 
 - name: copy nginx vhost config
   become: yes
-  copy:
-    src: files/nginx.conf
+  template:
+    src: templates/nginx.conf.j2
     dest: /etc/nginx/sites-enabled/strichliste-backend
     owner: root
     mode: 0644
@@ -92,6 +93,7 @@
     php -- --install-dir=/usr/local/bin --filename=composer
   args:
     creates: /usr/local/bin/composer
+  when: strichlistendb_exist.changed
   
 - name: install php dependencies
   become: yes
@@ -99,6 +101,7 @@
   args: 
     chdir: /opt/strichliste2-backend
     creates: /opt/strichliste2-backend/vendor
+  when: strichlistendb_exist.changed
 
 - name: create database schema
   become: yes
@@ -106,6 +109,7 @@
   args: 
     chdir: /opt/strichliste2-backend
     creates: /opt/strichliste2-backend/var/app.db
+  when: strichlistendb_exist.changed
 
 - name: migrate database schema
   become: yes
@@ -116,6 +120,7 @@
   when: 
     - not generate_new_database|bool
     - import_or_migrate_database_file is defined
+  when: strichlistendb_exist.changed
 
 - name: set file permissions for php backend
   become: yes
