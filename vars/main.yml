@@ -1,6 +1,6 @@
 ---
 # version controll
-playbook_version_number: 9001 # it must be over 9000
+playbook_version_number: 9002 # it must be over 9000
 playbook_version_path: '/etc/ansible-version/role-strichliste-backend_chaos-bodensee_github.com.version' 
 
 # requirements for strichliste

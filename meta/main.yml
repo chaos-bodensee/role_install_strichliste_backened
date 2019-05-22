@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: L3D
+  description: Install the strichliste.org backend
+  license: "MIT"
+  min_ansible_version: 2.4
+  github_branch: master
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+        - sid
+  galaxy_tags:
+    - strichliste
+    - backend
+dependencies: []
