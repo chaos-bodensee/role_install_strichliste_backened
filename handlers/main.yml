@@ -1,0 +1,15 @@
+---
+- name: restart nginx 
+  become: yes
+  service: 
+    name: nginx
+    state: restarted
+  when: configure_strichliste_webserver | bool
+
+      
+- name: restart php-fpm 
+  become: yes
+  service: 
+    name: php7.3-fpm
+    state: restarted
+  when: install_custom_php | bool

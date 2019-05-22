@@ -4,3 +4,28 @@ generate_new_database: true
 
 # version check for this playbook
 submodules_versioncheck: true
+
+# install requirements
+install_strichliste_backend_requirements: true
+
+# install custom php version?
+install_custom_php: true
+
+# should we install and configure ngin?
+configure_strichliste_webserver: true
+
+# warn if not on debian based systems
+check_os_family: true
+
+# parameter for strichliste config
+# paypal payment
+strichliste_enable_paypal: 'false'
+strichliste_paypal_recipient: 'foo@bar.baz'
+strichliste_paypal_fee: '0'
+
+# billing
+strichliste_boundary_upper: '15000'
+strichliste_boundary_lower: '-10000'
+
+# moneyflow
+strichliste_payment_undo: 'enable'

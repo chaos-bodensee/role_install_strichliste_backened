@@ -1,0 +1,71 @@
+# this is the config file of your strichliste
+# attention: this file is managed with ansible
+# all local changes will be overwritten!
+
+parameters:
+    strichliste:
+
+        common:
+            idleTimeout: 30000 # Time in ms
+
+        paypal:
+            enabled: {{ strichliste_enable_paypal }}
+            recipient: "{{ strichliste_paypal_recipient }}"
+            fee: {{ strichliste_paypal_fee }}
+
+        user:
+            # See http://de.php.net/manual/en/datetime.formats.relative.php
+            stalePeriod: '15 day'
+
+        i18n:
+            dateFormat: 'YYYY-MM-DD HH:mm:ss'
+            timezone: 'auto'
+            language: 'en'
+            currency:
+                name: 'Euro'
+                symbol: '€'
+                alpha3: 'EUR'
+
+        account:
+            boundary:
+                upper: {{ strichliste_boundary_upper }}
+                lower: {{ strichliste_boundary_lower }}
+
+        # Be aware: All amounts are in cents!
+        payment:
+            undo:
+                enabled: {{ strichliste_payment_undo }}
+                delete: false
+                timeout: '5 minute' # See http://de.php.net/manual/en/datetime.formats.relative.php
+
+            boundary:
+                upper: 5000
+                lower: -2000
+
+            transactions:
+                enabled: true
+
+            deposit:
+                enabled: true
+                custom: true
+                steps:
+                    - 50
+                    - 100
+                    - 200
+                    - 500
+                    - 1000
+                    - 2000
+
+            dispense:
+                enabled: true
+                custom: true
+                steps:
+                    - 50
+                    - 75
+                    - 100
+                    - 150
+                    - 200
+                    - 250
+                    - 500
+                    - 1000
+

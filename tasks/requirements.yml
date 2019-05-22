@@ -1,0 +1,53 @@
+---
+- name: install strichliste requirements for debian
+  become: yes
+  package:
+    name: "{{ debian_strichliste_requirements }}"
+    state: present
+
+- name: get php sources gpg signature
+  become: yes
+  get_url:
+    url: https://packages.sury.org/php/apt.gpg
+    dest: /etc/apt/trusted.gpg.d/php.gpg
+  when: install_custom_php | bool
+
+- name: add php repo
+  become: yes
+  apt_repository:
+    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"  
+    state: present
+  when: install_custom_php | bool
+
+- name: install php7.3 and other requirements
+  become: true
+  apt:
+    name: 
+      - php7.3
+      - php
+      - git 
+      - curl  
+      - unzip
+      - sqlite3
+      - php7.3-cli
+      - php-cli
+      - php7.3-xml
+      - php-xml
+      - php7.3-zip
+      - php-zip
+      - php7.3-sqlite3
+      - php-sqlite3
+      - php7.3-fpm
+      - php-fpm
+      - php7.3-mysql  
+      - mariadb-server
+      - python-mysqldb
+      - python3-mysqldb
+    state: present
+
+- name: install nginx
+  become: true
+  package:
+    name: nginx
+    state: present
+  when: configure_strichliste_webserver | bool
