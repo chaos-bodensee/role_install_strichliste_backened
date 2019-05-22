@@ -5,10 +5,7 @@
 - name: install strichliste requirements
   become: yes
   package:
-    name:
-      - lsb-release
-      - apt-transport-https
-      - ca-certificates
+    name: "{{ debian_strichliste_requirements }}"
     state: present
 
 - name: get php sources gpg signature
@@ -120,6 +117,13 @@
   when: 
     - not generate_new_database|bool
     - import_or_migrate_database_file is defined
+
+- name: applay configuration changes
+  become: yes
+  shell: "php bin/console cache:clear"
+  args: 
+    chdir: /opt/strichliste2-backend
+    creates: /opt/strichliste2-backend/var/app.db
   when: strichlistendb_exist.changed
 
 - name: set file permissions for php backend
