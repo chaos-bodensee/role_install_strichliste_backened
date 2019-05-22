@@ -5,7 +5,7 @@
 - name: warn if not on debian based os
   fail:
     msg: "Attention. This role is written for debian based systems. Please make sure you know what you are doing!"
-  when: 
+  when:
     - check_os_family | bool
     - ansible_os_family != 'Debian'
 
@@ -38,51 +38,52 @@
 
 - name: remove default nginx vhost file
   become: yes
-  file: 
+  file:
     dest: /etc/nginx/sites-enabled/default
     state: absent
   when: configure_strichliste_webserver | bool
-      
+
 - name: clone backend code
   become: yes
-  git: 
+  git:
     repo: https://github.com/strichliste/server.git
     dest: /opt/strichliste2-backend
     update: True
     version: master
-    
+
 - name: install composer
   become: yes
   shell: |
-    curl -sS https://getcomposer.org/installer | 
+    set -o pipefail
+    curl -sS https://getcomposer.org/installer |
     php -- --install-dir=/usr/local/bin --filename=composer
   args:
     creates: /usr/local/bin/composer
   when: strichlistendb_exist.changed
-  
+
 - name: install php dependencies
   become: yes
-  shell: composer install
-  args: 
+  command: "composer install"
+  args:
     chdir: /opt/strichliste2-backend
     creates: /opt/strichliste2-backend/vendor
   when: strichlistendb_exist.changed
 
 - name: create database schema
   become: yes
-  shell: php bin/console doctrine:schema:create
-  args: 
+  command: "php bin/console doctrine:schema:create"
+  args:
     chdir: /opt/strichliste2-backend
     creates: /opt/strichliste2-backend/var/app.db
   when: strichlistendb_exist.changed
 
 - name: migrate database schema
   become: yes
-  shell: "php bin/console app:import {{ import_or_migrate_database_file }}"
-  args: 
+  command: "php bin/console app:import {{ import_or_migrate_database_file }}"
+  args:
     chdir: /opt/strichliste2-backend
     creates: /opt/strichliste2-backend/var/app.db
-  when: 
+  when:
     - not generate_new_database | bool
     - import_or_migrate_database_file is defined
 
@@ -93,15 +94,8 @@
     dest: /opt/strichliste2-backend/config/strichliste.yaml
     owner: root
     group: root
-
-- name: applay configuration changes
-  become: yes
-  shell: "php bin/console cache:clear"
-  args: 
-    chdir: /opt/strichliste2-backend
-    creates: /opt/strichliste2-backend/var/app.db
-  when: strichlistendb_exist.changed
   notify:
+    - applay configuration changes
     - restart php-fpm
     - restart nginx
 

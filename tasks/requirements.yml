@@ -15,18 +15,18 @@
 - name: add php repo
   become: yes
   apt_repository:
-    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"  
+    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
     state: present
   when: install_custom_php | bool
 
 - name: install php7.3 and other requirements
   become: true
   apt:
-    name: 
+    name:
       - php7.3
       - php
-      - git 
-      - curl  
+      - git
+      - curl
       - unzip
       - sqlite3
       - php7.3-cli
@@ -39,7 +39,7 @@
       - php-sqlite3
       - php7.3-fpm
       - php-fpm
-      - php7.3-mysql  
+      - php7.3-mysq
       - mariadb-server
       - python-mysqldb
       - python3-mysqldb

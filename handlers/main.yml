@@ -1,15 +1,23 @@
 ---
-- name: restart nginx 
+- name: restart nginx
   become: yes
-  service: 
+  service:
     name: nginx
     state: restarted
   when: configure_strichliste_webserver | bool
 
-      
-- name: restart php-fpm 
+- name: restart php-fpm
   become: yes
-  service: 
+  service:
     name: php7.3-fpm
     state: restarted
   when: install_custom_php | bool
+
+- name: applay configuration changes
+  become: yes
+  shell: "php bin/console cache:clear"
+  args:
+    chdir: /opt/strichliste2-backend
+    creates: /opt/strichliste2-backend/var/app.db
+  when: strichlistendb_exist.changed
+  notify:
