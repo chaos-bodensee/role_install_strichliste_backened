@@ -39,11 +39,12 @@
       - php-sqlite3
       - php7.3-fpm
       - php-fpm
-      - php7.3-mysq
+      - php7.3-mysqlnd
       - mariadb-server
       - python-mysqldb
       - python3-mysqldb
     state: present
+    update_cache: yes
 
 - name: install nginx
   become: true
