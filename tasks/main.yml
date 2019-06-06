@@ -48,7 +48,7 @@
   git:
     repo: https://github.com/strichliste/server.git
     dest: /opt/strichliste2-backend
-    update: True
+    update: false
     version: master
 
 - name: install composer
@@ -59,6 +59,7 @@
     php -- --install-dir=/usr/local/bin --filename=composer
   args:
     creates: /usr/local/bin/composer
+    executable: /bin/bash
   when: strichlistendb_exist.changed
 
 - name: install php dependencies
