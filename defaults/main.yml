@@ -19,7 +19,7 @@ check_os_family: true
 
 # parameter for strichliste config
 # paypal payment
-strichliste_enable_paypal: 'true'
+strichliste_enable_paypal: 'false'
 strichliste_paypal_recipient: 'kueche.toolboxbodensee@gmail.com'
 strichliste_paypal_fee: '0'
 
